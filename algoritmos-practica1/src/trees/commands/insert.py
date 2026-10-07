@@ -47,7 +47,7 @@ def insert[T: Comparable](tree: AVLTree[T], value: str) -> AVLTree[T]:
     # 3. Retornar la nueva raíz
     
     # 1. Parseamos el string JSON 'value' a un objeto del modelo
-    obj = utils.parse_json_to_character(value)  # type: ignore
+    obj = utils.parse_json_to_node(value)
     key = obj.name
 
     # Si el árbol está vacío, creamos e instanciamos la raíz directamente

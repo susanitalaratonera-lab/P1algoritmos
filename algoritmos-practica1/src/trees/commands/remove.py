@@ -43,18 +43,17 @@ def remove[T: Comparable](tree: AVLTree[T], key: str) -> AVLTree[T]:
 
     # 1. Utilizamos la clave directamente
     key_node = Node(name=key)
-    target_node = tree.find(key)
+    # El árbol guarda objetos Node, así que buscamos con un Node que solo tiene la clave
+    target_node = tree.find(key_node)
 
     if target_node is None:
         print(f"KEY {key} NOT PRESENT IN TREE")
         return tree
     else:
-        #guardamos el valor del nodo para usarlo en el print
-        target_value = target_node.value
-
         # 2. Invocamos tree.remove
-        new_root = tree.remove(target_value)
-        print(f"VALUE {target_value} SUCCESSFULLY REMOVED")
+        new_root = tree.remove(key_node)
+        # La salida de ejemplo (la correcta) imprime el Node construido a partir de la clave
+        print(f"VALUE {key_node} SUCCESSFULLY REMOVED")
 
         # 3. Retornamos la nueva raíz del árbol
         return new_root
