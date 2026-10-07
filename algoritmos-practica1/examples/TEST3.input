@@ -1,0 +1,11 @@
+# Cargamos el JSON con los satelites
+LOAD data.json
+
+# Imprimimos el arbol
+PRINT
+
+# Insertamos MIR
+UPDATE "ISS" '{"status": "Retired"}'
+
+# Imprimimos para asegurarnos de que o AVL sea consistente cos datos que modificamos
+PRINT

@@ -1,0 +1,21 @@
+# Cargamos el JSON con los satelites
+LOAD data.json
+
+# Imprimimos el arbol
+PRINT
+
+# ISS debería estar en el árbol
+FIND "ISS"
+# MIR no debería estar en el árbol
+FIND "MIR"
+# Voyager 1 debería estar en el árbol
+FIND "Voyager 1"
+# Voyager 2 no debería estar en el árbol
+FIND "Voyager 2"
+# GPS-III-01 debería estar en el árbol
+FIND "GPS-III-01"
+
+# Insertamos MIR
+INSERT '{"name": "MIR", "agency": "Roscosmos", "orbit_type": "LEO", "launch_year": 1986, "x": 4500.0, "y": 3200.0, "z": 3900.0, "transmitter_power_w": 1000.0, "status": "Retired", "description": "Soviet and Russian space station operated in low Earth orbit from 1986 to 2001."}'
+# Ahora si que debería estar en el arbol
+FIND "MIR"
