@@ -2,10 +2,10 @@
 
 from __future__ import annotations
 
-from ..trees import AVLTree, Comparable, Node
+from ..trees import AVLTree, Node
 
 
-def remove[T: Comparable](tree: AVLTree[T], key: str) -> AVLTree[T]:
+def remove(tree: AVLTree[Node] | None, key: str) -> AVLTree[Node] | None:
     """Elimina una entidad del árbol AVL y rebalancea la estructura si es necesario.
 
     Si el dato no existía debe imprimirse el mensaje KEY <key> NOT PRESENT IN TREE. Por ejemplo:

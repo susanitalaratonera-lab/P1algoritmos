@@ -4,12 +4,12 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from ..trees import AVLTree, Comparable
+from ..trees import AVLTree, Node
 
 from .. import utils
 
 
-def load[T: Comparable](tree: AVLTree[T] | None, filepath: str | Path) -> AVLTree[T]:
+def load(tree: AVLTree[Node] | None, filepath: str | Path) -> AVLTree[Node] | None:
     """Carga los datos contenidos en un archivo JSON en el árbol AVL.
 
     Comportamiento:

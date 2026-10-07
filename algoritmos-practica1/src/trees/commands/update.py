@@ -5,10 +5,10 @@ from __future__ import annotations
 import dataclasses
 import json
 
-from ..trees import AVLTree, Comparable, Node
+from ..trees import AVLTree, Node
 
 
-def update[T: Comparable](tree: AVLTree[T], key: str, value: str) -> AVLTree[T]:
+def update(tree: AVLTree[Node] | None, key: str, value: str) -> AVLTree[Node] | None:
     """Actualiza la entidad identificada por `key` reemplazándola por el nuevo objeto deserializado de `value`.
 
     Si no existe un dato para la clave proporcionada se debe imprimir el mensaje KEY <key> NOT PRESENT. Ejemplo:

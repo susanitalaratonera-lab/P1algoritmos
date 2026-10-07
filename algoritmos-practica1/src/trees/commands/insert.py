@@ -2,12 +2,12 @@
 
 from __future__ import annotations
 
-from ..trees import AVLTree, Comparable
+from ..trees import AVLTree, Node
 
 from .. import utils
 
 
-def insert[T: Comparable](tree: AVLTree[T], value: str) -> AVLTree[T]:
+def insert(tree: AVLTree[Node] | None, value: str) -> AVLTree[Node]:
     """Inserta una nueva entidad en el árbol AVL manteniendo la propiedad de balanceo.
 
     Nota pedagógica de implementación:
