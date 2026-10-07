@@ -2,9 +2,10 @@
 
 from __future__ import annotations
 
-from ..trees import AVLTree, Comparable
+import dataclasses
+import json
 
-from .. import utils
+from ..trees import AVLTree, Comparable, Node
 
 
 def update[T: Comparable](tree: AVLTree[T], key: str, value: str) -> AVLTree[T]:
@@ -55,29 +56,37 @@ def update[T: Comparable](tree: AVLTree[T], key: str, value: str) -> AVLTree[T]:
         print(f"KEY {key} NOT PRESENT")
         return tree
 
-    # 1. Parseamos el JSON value a un objeto del modelo
-    new_obj = utils.parse_json_to_character(value)
+    # 1. Parseamos el JSON value. Puede ser parcial (ej: '{"status": "Retired"}'),
+    # así que lo leemos como diccionario para saber qué campos hay que cambiar
+    new_fields = json.loads(value)
 
-    # 2. Localizamos el nodo con clave 'key'
-    target_node = tree.find(key)
+    # 2. Localizamos el nodo con clave 'key' (el árbol guarda objetos Node)
+    target_node = tree.find(Node(name=key))
 
     if target_node is None:
         print(f"KEY {key} NOT PRESENT")
         return tree
 
-    # Guardamos el objeto para imprimirlo despues y usarlo en el remove
+    # Guardamos el objeto original para imprimirlo después
     original_value = target_node.value
 
-    # 3. Actualizar el contenido garantizando que se preserve la invariante AVL
-    # Para no romper el orden del árbol, la estrategia será eliminar y reinsertar
-    new_root = tree.remove(original_value)
+    # Combinamos los datos originales con los campos nuevos (Node es inmutable)
+    new_obj = dataclasses.replace(original_value, **new_fields)
 
-    if new_root is None:
-        new_root = AVLTree(new_obj)
+    # 3. Actualizar el contenido garantizando que se preserve la invariante AVL
+    if new_obj.name == original_value.name:
+        # La clave no cambia: el orden del árbol se mantiene, actualizamos in situ
+        target_node.value = new_obj
+        new_root = tree
     else:
-        new_root = new_root.insert(new_obj)
+        # La clave cambia: eliminamos y reinsertamos para mantener el orden y el balanceo
+        new_root = tree.remove(original_value)
+        if new_root is None:
+            new_root = AVLTree(new_obj)
+        else:
+            new_root = new_root.insert(new_obj)
+
+    print(f"UPDATED ENTRY {key} IN TREE. ORIGINAL VALUE: {original_value}. UPDATED VALUE: {new_obj}")
 
     # 4. Retornamos la raíz del árbol
-    print(f"UPDATED ENTRY {key} IN TREE. ORIGINAL VALUE: {original_value}. UPDATED VALUE: {value}")
-
     return new_root

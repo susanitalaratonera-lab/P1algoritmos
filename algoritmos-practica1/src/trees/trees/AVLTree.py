@@ -86,19 +86,27 @@ class AVLTree[T: Comparable](BinarySearchTree[T]):
 
         Complejidad temporal: O(log n) garantizado.
         """
-        # 1. Inserción estándar de un ABB
-        super().insert(value)
-
-        # 2. Localizamos el nodo insertado
-        current = self
-        while current is not None and current.value != value:
-            if value < current.value:
-                current = current.left
+        # 1 y 2. Inserción estándar de un ABB, localizando a la vez el nodo insertado.
+        # Se hace de forma iterativa: super().insert() llama recursivamente a insert()
+        # sobre los hijos, que al ser AVLTree volverían a ejecutar este método y
+        # rebalancear en cada nivel, dejando `self` fuera de la raíz tras una rotación.
+        parent = self.root
+        while True:
+            if value == parent.value:
+                # Clave duplicada: no se modifica el árbol
+                return parent.root
+            if value < parent.value:
+                if parent.left is None:
+                    parent.left = self.__class__(value=value, parent=parent)
+                    current = parent.left
+                    break
+                parent = parent.left
             else:
-                current = current.right
-
-        if current is None:
-            return self
+                if parent.right is None:
+                    parent.right = self.__class__(value=value, parent=parent)
+                    current = parent.right
+                    break
+                parent = parent.right
 
         # 3. Ascendemos comprobando el factor de equilibrio
         while current is not None:
@@ -196,7 +204,7 @@ class AVLTree[T: Comparable](BinarySearchTree[T]):
                 if current.right and current.right.balance < 0:
                     current = current.__rotate_right_left()
                 else:
-                    current.__rotate_left
+                    current = current.__rotate_left()
 
             current = current.parent
 
